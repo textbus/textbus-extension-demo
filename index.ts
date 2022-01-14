@@ -45,9 +45,14 @@ import {
 
 import { alertComponentLoader } from './src/components/alert/alert.component';
 import { alertTool } from './src/components/alert/alert.tool';
+import { gridTool } from './src/components/grid/grid.tool';
+import { gridComponentLoader } from './src/components/grid/grid.component';
 
 const options: EditorOptions = {
   componentLoaders: [
+    gridComponentLoader,
+    alertComponentLoader,
+
     audioComponentLoader,
     blockComponentLoader,
     blockquoteComponentLoader,
@@ -58,8 +63,6 @@ const options: EditorOptions = {
     preComponentLoader,
     tableComponentLoader,
     videoComponentLoader,
-
-    alertComponentLoader
   ],
   formatLoaders: [
     boldFormatLoader,
@@ -99,14 +102,18 @@ const options: EditorOptions = {
       [tableAddTool, tableRemoveTool],
       [cleanTool],
 
-      [alertTool]
+      [alertTool, gridTool]
     ]),
     new LinkJumpTipPlugin()
-  ]
+  ],
+  content: document.getElementById('template')?.innerHTML
 }
 
 const editor = createEditor(document.getElementById('editor')!, options)
 
-editor.onChange.subscribe(() => {
-  console.log(editor.getContents())
-})
+
+window['editor'] = editor
+
+// editor.onChange.subscribe(() => {
+//   console.log(editor.getContents())
+// })
