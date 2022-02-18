@@ -64,7 +64,7 @@ export const alertComponentLoader: ComponentLoader = {
     const slot = new Slot([
       ContentType.Text
     ])
-    slotParser(slot, element.children[0]! as HTMLElement)
+    slotParser(slot, element.children[1]! as HTMLElement)
     return alertComponent.createInstance(context, slot)
   }
 }
