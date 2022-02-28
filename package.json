@@ -56,9 +56,9 @@
   },
   "dependencies": {
     "@tanbo/di": "^1.0.5",
-    "@tanbo/stream": "^0.0.9",
-    "@textbus/browser": "^2.0.0-alpha.23",
-    "@textbus/core": "^2.0.0-alpha.23",
-    "@textbus/editor": "^2.0.0-alpha.23"
+    "@tanbo/stream": "^0.0.11",
+    "@textbus/browser": "^2.0.0-alpha.28",
+    "@textbus/core": "^2.0.0-alpha.28",
+    "@textbus/editor": "^2.0.0-alpha.28"
   }
 }
