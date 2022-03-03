@@ -1,34 +1,25 @@
 import {
+  ComponentData,
   ComponentInstance,
   ComponentMethods,
   ContentType,
   defineComponent,
   Slot,
-  SlotLiteral,
   SlotRender,
-  Translator,
   useSlots,
   VElement
 } from '@textbus/core'
 import { ComponentLoader, SlotParser } from '@textbus/browser'
 import { Injector } from '@tanbo/di'
 
-export const alertComponent = defineComponent<ComponentMethods, SlotLiteral, Slot>({
+export const alertComponent = defineComponent<ComponentMethods>({
   type: ContentType.BlockComponent,
   name: 'AlertComponent',
-  transform(translator: Translator, state: SlotLiteral): Slot {
-    return translator.createSlot(state)
-  },
-  setup(initState?: Slot): ComponentMethods {
-    const slots = useSlots([
-      initState || new Slot([
+  setup(data?: ComponentData): ComponentMethods {
+    const slots = useSlots(data?.slots || [new Slot([
         ContentType.Text
       ])
-    ], () => {
-      return new Slot([
-        ContentType.Text
-      ])
-    })
+    ])
 
     return {
       render(isOutputMode: boolean, slotRender: SlotRender): VElement {
@@ -42,9 +33,6 @@ export const alertComponent = defineComponent<ComponentMethods, SlotLiteral, Slo
             }
           </div>
         )
-      },
-      toJSON(): any {
-        return slots.get(0)!.toJSON()
       }
     }
   }
@@ -65,6 +53,8 @@ export const alertComponentLoader: ComponentLoader = {
       ContentType.Text
     ])
     slotParser(slot, element.children[1]! as HTMLElement)
-    return alertComponent.createInstance(context, slot)
+    return alertComponent.createInstance(context, {
+      slots: [slot]
+    })
   }
 }

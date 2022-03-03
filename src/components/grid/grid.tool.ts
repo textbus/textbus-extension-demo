@@ -1,5 +1,5 @@
 import { ButtonTool } from '@textbus/editor'
-import { Commander, ContentType, Slot, Selection } from '@textbus/core'
+import { Commander, ContentType, Selection, Slot } from '@textbus/core'
 import { gridComponent } from './grid.component'
 
 export function gridTool() {
@@ -10,24 +10,13 @@ export function gridTool() {
       label: '插入 Grid 组件',
       onClick() {
 
-        const cells: Slot[][] = []
-        const rows = 3
-        const cols = 4
-
-        for (let i = 0; i < rows; i++) {
-          const row: Slot[] = []
-          for (let j = 0; j < cols; j++) {
-            row.push(new Slot([
-              ContentType.Text
-            ]))
-          }
-          cells.push(row)
-        }
+        const slots = Array.from({length: 12}).fill(null).map(() => new Slot([ContentType.Text]))
 
         const component = gridComponent.createInstance(injector, {
-          rows,
-          cols,
-          cells
+          slots,
+          state: {
+            cols: 3
+          }
         })
         commander.insert(component)
         console.log(selection)

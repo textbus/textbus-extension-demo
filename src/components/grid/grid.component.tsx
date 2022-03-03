@@ -1,53 +1,38 @@
 import {
+  ComponentData,
   ComponentInstance,
   ComponentMethods,
   ContentType,
-  defineComponent, onContextMenu,
+  defineComponent,
+  onContextMenu,
+  onDestroy,
   Slot,
-  SlotLiteral,
   SlotRender,
-  Translator,
-  useContext,
-  useSlots,
+  useSlots, useState,
   VElement
 } from '@textbus/core'
 import { ComponentLoader, SlotParser } from '@textbus/browser'
 import { Injector } from '@tanbo/di'
 
 export interface GridState {
-  rows: number
   cols: number
-  cells: SlotLiteral[][]
 }
 
-export interface GridData {
-  rows: number
-  cols: number
-  cells: Slot[][]
-}
-
-export const gridComponent = defineComponent<ComponentMethods, GridState, GridData>({
+export const gridComponent = defineComponent<ComponentMethods, GridState>({
   name: 'GridComponent',
   type: ContentType.BlockComponent,
-  transform(translator: Translator, state: GridState): GridData {
-    return {
-      ...state,
-      cells: state.cells.map(row => {
-        return row.map(slotLiteral => {
-          return translator.createSlot(slotLiteral)
-        })
-      })
-    }
-  },
-  setup(initData: GridData): ComponentMethods {
-
-    const context = useContext()
-
-    const translator = context.get(Translator)
-
-    const slots = useSlots(initData.cells.flat(), state => {
-      return translator.createSlot(state)
+  setup(data: ComponentData<GridState>): ComponentMethods {
+    let state = data.state!
+    const stateController = useState(state)
+    const subscription = stateController.onChange.subscribe(newState => {
+      state = newState
     })
+
+    onDestroy(() => {
+      subscription.unsubscribe()
+    })
+
+    const slots = useSlots(data.slots!)
 
     onContextMenu(() => {
       return [{
@@ -60,22 +45,38 @@ export const gridComponent = defineComponent<ComponentMethods, GridState, GridDa
 
     function addRow() {
       const cells: Slot[] = []
-      for (let i = 0; i < initData.cols; i++) {
+      for (let i = 0; i < data.state!.cols; i++) {
         cells.push(new Slot([
           ContentType.Text
         ]))
       }
-      initData.cells.push(cells)
       slots.push(...cells)
+    }
+
+    function changeColumnCount(count: number) {
+      stateController.update(draft => {
+        draft.cols = count
+      })
+    }
+
+    function toGrid() {
+      const cells = slots.toArray()
+      const grid: Slot[][] = []
+
+      for (let i = 0; i < cells.length; i += state.cols) {
+        grid.push(cells.slice(i, i + state.cols))
+      }
+      return grid
     }
 
     return {
       render(isOutputMode: boolean, slotRender: SlotRender): VElement {
+        const grid = toGrid()
         if (isOutputMode) {
           return (
-            <div class="grid" data-group={initData.rows} data-cols={initData.cols}>
+            <div class="grid" data-cols={state.cols}>
               {
-                initData.cells.map(row => {
+                grid.map(row => {
                   return (
                     <div class="grid-group">
                       {
@@ -93,12 +94,15 @@ export const gridComponent = defineComponent<ComponentMethods, GridState, GridDa
           )
         }
         return (
-          <div class="grid" data-group={initData.rows} data-cols={initData.cols}>
+          <div class="grid" data-cols={state.cols}>
             <div>
               <button type="button" onClick={addRow}>添加一行</button>
+              <button type="button" onClick={() => {
+                changeColumnCount(5)
+              }}>变成 5 列</button>
             </div>
             {
-              initData.cells.map(row => {
+              grid.map(row => {
                 return (
                   <div class="grid-group">
                     {
@@ -114,16 +118,6 @@ export const gridComponent = defineComponent<ComponentMethods, GridState, GridDa
             }
           </div>
         )
-      },
-      toJSON(): GridState {
-        return {
-          ...initData,
-          cells: initData.cells.map(row => {
-            return row.map(slot => {
-              return slot.toJSON()
-            })
-          })
-        }
       }
     }
   }
@@ -150,8 +144,7 @@ export const gridComponentLoader: ComponentLoader = {
     return element.tagName.toLowerCase() === 'div' && element.className === 'grid'
   },
   read(element: HTMLElement, context: Injector, slotParser: SlotParser): ComponentInstance {
-    const rowSize = Number(element.dataset.group)
-    const colSize = Number(element.dataset.cols)
+    const cols = Number(element.dataset.cols)
 
     const cells = Array.from(element.children).map(row => {
       return Array.from(row.children).map(col => {
@@ -163,9 +156,10 @@ export const gridComponentLoader: ComponentLoader = {
     })
 
     return gridComponent.createInstance(context, {
-      rows: rowSize,
-      cols: colSize,
-      cells
+      slots: cells.flat(),
+      state: {
+        cols
+      }
     })
   }
 }
