@@ -12,7 +12,9 @@ export function alertTool() {
         const slot = new Slot([
           ContentType.Text
         ])
-        const component = alertComponent.createInstance(injector, slot)
+        const component = alertComponent.createInstance(injector, {
+          slots: [slot]
+        })
         commander.insert(component)
         selection.setLocation(slot, 0)
       }
