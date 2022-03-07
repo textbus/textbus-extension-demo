@@ -53,19 +53,19 @@ import { Commander } from '@textbus/core';
 const options: EditorOptions = {
   componentLoaders: [
     testComponentLoader,
-    // gridComponentLoader,
-    // alertComponentLoader,
-    //
-    // audioComponentLoader,
+    gridComponentLoader,
+    alertComponentLoader,
+
+    audioComponentLoader,
     blockComponentLoader,
-    // blockquoteComponentLoader,
-    // headingComponentLoader,
-    // imageComponentLoader,
-    // listComponentLoader,
-    // paragraphComponentLoader,
-    // preComponentLoader,
-    // tableComponentLoader,
-    // videoComponentLoader,
+    blockquoteComponentLoader,
+    headingComponentLoader,
+    imageComponentLoader,
+    listComponentLoader,
+    paragraphComponentLoader,
+    preComponentLoader,
+    tableComponentLoader,
+    videoComponentLoader,
   ],
   formatLoaders: [
     boldFormatLoader,
