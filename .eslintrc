@@ -27,5 +27,5 @@
     "no-constant-condition": ["error", {"checkLoops": false }],
     "semi": [1, "never"]
   },
-  "ignorePatterns": ["index.ts"]
+  "ignorePatterns": ["index.ts", "src"]
 }

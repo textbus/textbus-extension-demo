@@ -47,22 +47,25 @@ import { alertComponentLoader } from './src/components/alert/alert.component';
 import { alertTool } from './src/components/alert/alert.tool';
 import { gridTool } from './src/components/grid/grid.tool';
 import { gridComponentLoader } from './src/components/grid/grid.component';
+import { testComponent, testComponentLoader } from './src/components/test/test.component';
+import { Commander } from '@textbus/core';
 
 const options: EditorOptions = {
   componentLoaders: [
-    gridComponentLoader,
-    alertComponentLoader,
-
-    audioComponentLoader,
+    testComponentLoader,
+    // gridComponentLoader,
+    // alertComponentLoader,
+    //
+    // audioComponentLoader,
     blockComponentLoader,
-    blockquoteComponentLoader,
-    headingComponentLoader,
-    imageComponentLoader,
-    listComponentLoader,
-    paragraphComponentLoader,
-    preComponentLoader,
-    tableComponentLoader,
-    videoComponentLoader,
+    // blockquoteComponentLoader,
+    // headingComponentLoader,
+    // imageComponentLoader,
+    // listComponentLoader,
+    // paragraphComponentLoader,
+    // preComponentLoader,
+    // tableComponentLoader,
+    // videoComponentLoader,
   ],
   formatLoaders: [
     boldFormatLoader,
@@ -111,8 +114,18 @@ const options: EditorOptions = {
 
 const editor = createEditor(document.getElementById('editor')!, options)
 
+const btn = document.getElementById('insertTextComponent')!
 
-window['editor'] = editor
+btn.addEventListener('click', () => {
+  const injector = editor.injector!
+  const commander = injector.get(Commander)
+
+  commander.insert(testComponent.createInstance(injector, {
+    state: {
+      borderColor: '#f00'
+    }
+  }))
+})
 
 // editor.onChange.subscribe(() => {
 //   console.log(editor.getContents())
