@@ -49,9 +49,15 @@ import { gridTool } from './src/components/grid/grid.tool';
 import { gridComponentLoader } from './src/components/grid/grid.component';
 import { testComponent, testComponentLoader } from './src/components/test/test.component';
 import { Commander } from '@textbus/core';
+import { atComponentLoader } from './src/components/at/at.component';
+import { AtPlugin } from './src/components/at/at.plugin';
 
 const options: EditorOptions = {
+  editingStyleSheets: [
+    `[textbus-document=true]{overflow: visible!important}`
+  ],
   componentLoaders: [
+    atComponentLoader,
     testComponentLoader,
     gridComponentLoader,
     alertComponentLoader,
@@ -107,7 +113,8 @@ const options: EditorOptions = {
 
       [alertTool, gridTool]
     ]),
-    new LinkJumpTipPlugin()
+    new LinkJumpTipPlugin(),
+    new AtPlugin()
   ],
   content: document.getElementById('template')?.innerHTML
 }

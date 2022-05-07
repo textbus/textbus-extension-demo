@@ -16,7 +16,7 @@ export function alertTool() {
           slots: [slot]
         })
         commander.insert(component)
-        selection.setLocation(slot, 0)
+        selection.setPosition(slot, 0)
       }
     }
   })

@@ -96,6 +96,7 @@ export const gridComponent = defineComponent<ComponentMethods, GridState>({
         return (
           <div class="grid" data-cols={state.cols}>
             <div>
+              <p>fdsafdsafdsa</p>
               <button type="button" onClick={addRow}>添加一行</button>
               <button type="button" onClick={() => {
                 changeColumnCount(5)
