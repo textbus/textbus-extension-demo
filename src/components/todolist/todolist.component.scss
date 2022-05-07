@@ -1,0 +1,40 @@
+.todolist {
+  margin: 1em auto;
+
+  &-item {
+    display: flex;
+  }
+
+  &-ctrl {
+    width: 20px;
+
+    div {
+      width: 12px;
+      height: 12px;
+      border: 2px solid #1777dc;
+      position: relative;
+      cursor: pointer;
+      top: 2px;
+      border-radius: 4px;
+
+      &.active {
+        &::after {
+          content: "";
+          width: 6px;
+          height: 12px;
+          left: 5px;
+          top: -4px;
+          border-width: 0 2px 2px 0;
+          position: absolute;
+          border-style: solid;
+          transform: rotateZ(45deg);
+          border-color: transparent #1777dc #1777dc transparent;
+        }
+      }
+    }
+  }
+
+  &-content {
+    flex: 1;
+  }
+}

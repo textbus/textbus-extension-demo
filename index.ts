@@ -51,12 +51,16 @@ import { testComponent, testComponentLoader } from './src/components/test/test.c
 import { Commander } from '@textbus/core';
 import { atComponentLoader } from './src/components/at/at.component';
 import { AtPlugin } from './src/components/at/at.plugin';
+import { todolistComponentLoader } from './src/components/todolist/todolist.component';
+import { todolistTool } from './src/components/todolist/todolist.tool';
 
 const options: EditorOptions = {
+  markdownDetect: true,
   editingStyleSheets: [
     `[textbus-document=true]{overflow: visible!important}`
   ],
   componentLoaders: [
+    todolistComponentLoader,
     atComponentLoader,
     testComponentLoader,
     gridComponentLoader,
@@ -111,12 +115,12 @@ const options: EditorOptions = {
       [tableAddTool, tableRemoveTool],
       [cleanTool],
 
-      [alertTool, gridTool]
+      [alertTool, gridTool, todolistTool]
     ]),
     new LinkJumpTipPlugin(),
     new AtPlugin()
   ],
-  content: document.getElementById('template')?.innerHTML
+  // content: document.getElementById('template')?.innerHTML
 }
 
 const editor = createEditor(document.getElementById('editor')!, options)
