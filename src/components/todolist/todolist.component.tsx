@@ -65,9 +65,9 @@ export const todolistComponent = defineComponent({
                 return (
                   <div class="todolist-item">
                     <div class="todolist-ctrl">
-                      <div class={slot.state.complete ? 'active' : ''} onClick={() => {
+                      <div class={slot.state!.complete ? 'active' : ''} onClick={() => {
                         slot.updateState(draft => {
-                          draft.complete = !slot.state.complete
+                          draft.complete = !slot.state?.complete
                         })
                       }}>
                       </div>
@@ -75,7 +75,7 @@ export const todolistComponent = defineComponent({
                     {
                       slotRender(slot, () => {
                         return <div class="todolist-content" style={{
-                          color: (slot.state as TodolistState).complete ? '#ccc' : ''
+                          color: slot.state?.complete ? '#ccc' : ''
                         }}/>
                       })
                     }
