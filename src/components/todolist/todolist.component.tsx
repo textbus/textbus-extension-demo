@@ -1,14 +1,13 @@
 import {
-  ComponentData,
+  ComponentInitData,
   ComponentInstance,
   ContentType,
-  defineComponent, onEnter,
+  defineComponent, onBreak,
   Slot, SlotRender, useContext,
   useSlots,
-  VElement,
   Selection, useSelf, Commander
 } from '@textbus/core';
-import { ComponentLoader, SlotParser } from '@textbus/browser';
+import { ComponentLoader, SlotParser } from '@textbus/platform-browser';
 import { Injector } from '@tanbo/di';
 import './todolist.component.scss'
 import { paragraphComponent } from '@textbus/editor';
@@ -21,7 +20,7 @@ export interface TodolistState {
 export const todolistComponent = defineComponent({
   type: ContentType.BlockComponent,
   name: 'TodolistComponent',
-  setup(initData?: ComponentData<void, TodolistState>) {
+  setup(initData?: ComponentInitData<void, TodolistState>) {
     const slots = useSlots<TodolistState>(initData?.slots || [new Slot([
       ContentType.InlineComponent,
       ContentType.Text
@@ -39,7 +38,7 @@ export const todolistComponent = defineComponent({
     const selection = injector.get(Selection)
     const commander = injector.get(Commander)
 
-    onEnter(ev => {
+    onBreak(ev => {
       const slot = ev.target
       const index = ev.data.index
       ev.preventDefault()
@@ -73,10 +72,10 @@ export const todolistComponent = defineComponent({
                       </div>
                     </div>
                     {
-                      slotRender(slot, () => {
+                      slotRender(slot, children => {
                         return <div class="todolist-content" style={{
                           color: slot.state?.complete ? '#ccc' : ''
-                        }}/>
+                        }}>{children}</div>
                       })
                     }
                   </div>
@@ -91,7 +90,6 @@ export const todolistComponent = defineComponent({
 })
 
 export const todolistComponentLoader: ComponentLoader = {
-  component: todolistComponent,
   match(element: HTMLElement): boolean {
     return element.tagName.toLowerCase() === 'div' && element.getAttribute('component-name') === 'TodolistComponent'
   },

@@ -1,137 +1,238 @@
-import '@textbus/editor/bundles/textbus.min.css'
+import { Attribute, Commander, Component, Formatter } from '@textbus/core'
+import { AttributeLoader, ComponentLoader, FormatLoader } from '@textbus/platform-browser'
 import {
-  audioComponentLoader,
-  blockBackgroundColorFormatLoader,
-  blockComponentLoader,
+  alertComponent,
+  alertComponentLoader,
+  audioComponent,
+  audioComponentLoader, blockBackgroundColorFormatLoader,
+  blockBackgroundColorFormatter,
+  blockComponent, blockComponentLoader,
+  blockquoteComponent,
   blockquoteComponentLoader, boldFormatLoader,
+  boldFormatter,
   boldTool,
-  cleanTool, codeFormatLoader, colorFormatLoader,
+  cleanTool,
+  codeFormatLoader,
+  codeFormatter, colorFormatLoader,
+  colorFormatter,
   colorTool,
-  createEditor, defaultGroupTool,
-  dirFormatLoader,
-  EditorOptions, fontFamilyFormatLoader, fontFamilyTool,
-  fontSizeFormatLoader, fontSizeTool, headingComponentLoader,
+  componentsTool, defaultGroupTool,
+  dirFormatLoader, dirFormatter, Editor,
+  EditorOptions,
+  fontFamilyFormatLoader, fontFamilyFormatter,
+  fontFamilyTool,
+  fontSizeFormatLoader, fontSizeFormatter,
+  fontSizeTool,
+  formatPainterTool,
+  headingComponent, headingComponentLoader,
   headingTool,
   historyBackTool,
-  historyForwardTool, imageComponentLoader,
+  historyForwardTool,
+  imageCardComponent, imageCardComponentLoader, imageComponent,
+  imageComponentLoader,
   imageTool, insertParagraphAfterTool,
   insertParagraphBeforeTool,
-  italicFormatLoader,
-  italicTool,
-  letterSpacingFormatLoader, lineHeightFormatLoader,
-  linkFormatLoader,
+  italicFormatLoader, italicFormatter, italicTool,
+  jumbotronComponent,
+  jumbotronComponentLoader,
+  katexComponent,
+  katexComponentLoader,
+  letterSpacingFormatLoader,
+  letterSpacingFormatter,
+  lineHeightFormatLoader,
+  lineHeightFormatter, linkFormatLoader,
+  linkFormatter,
   LinkJumpTipPlugin,
-  linkTool,
+  linkTool, listComponent,
   listComponentLoader,
   olTool,
+  paragraphComponent,
   paragraphComponentLoader,
+  preComponent,
   preComponentLoader,
+  stepComponent,
+  stepComponentLoader,
   strikeThroughFormatLoader,
+  strikeThroughFormatter,
   strikeThroughTool,
   subscriptFormatLoader,
-  superscriptFormatLoader,
+  subscriptFormatter, superscriptFormatLoader, superscriptFormatter,
   tableAddTool,
-  tableComponentLoader,
-  tableRemoveTool, textAlignFormatLoader,
+  tableComponent,
+  tableComponentLoader, tableRemoveTool,
+  textAlignFormatLoader,
+  textAlignFormatter,
   textAlignTool,
   textBackgroundColorFormatLoader,
-  textBackgroundTool,
-  textIndentFormatLoader,
+  textBackgroundColorFormatter,
+  textBackgroundTool, textIndentFormatLoader,
+  textIndentFormatter,
   textIndentTool,
+  timelineComponent,
+  timelineComponentLoader,
+  todolistComponent,
+  todolistComponentLoader,
   Toolbar,
+  ToolFactory,
   ulTool,
-  underlineFormatLoader, underlineTool, unlinkTool, verticalAlignFormatLoader, videoComponentLoader
+  underlineFormatLoader,
+  underlineFormatter,
+  underlineTool,
+  unlinkTool, verticalAlignFormatLoader,
+  verticalAlignFormatter,
+  videoComponent, videoComponentLoader,
+  wordExplainComponent, wordExplainComponentLoader
 } from '@textbus/editor';
+import { testComponent } from './src/components/test/test.component';
 
-import { alertComponentLoader } from './src/components/alert/alert.component';
-import { alertTool } from './src/components/alert/alert.tool';
-import { gridTool } from './src/components/grid/grid.tool';
-import { gridComponentLoader } from './src/components/grid/grid.component';
-import { testComponent, testComponentLoader } from './src/components/test/test.component';
-import { Commander } from '@textbus/core';
-import { atComponentLoader } from './src/components/at/at.component';
-import { AtPlugin } from './src/components/at/at.plugin';
-import { todolistComponentLoader } from './src/components/todolist/todolist.component';
-import { todolistTool } from './src/components/todolist/todolist.tool';
+export const defaultComponentLoaders: ComponentLoader[] = [
+  imageCardComponentLoader,
+  todolistComponentLoader,
+  katexComponentLoader,
+  wordExplainComponentLoader,
+  timelineComponentLoader,
+  stepComponentLoader,
+  alertComponentLoader,
+  jumbotronComponentLoader,
+  audioComponentLoader,
+  blockComponentLoader,
+  blockquoteComponentLoader,
+  headingComponentLoader,
+  imageComponentLoader,
+  listComponentLoader,
+  paragraphComponentLoader,
+  preComponentLoader,
+  tableComponentLoader,
+  videoComponentLoader,
+];
 
-const options: EditorOptions = {
-  markdownDetect: true,
+export const defaultFormatLoaders: FormatLoader<any>[] = [
+  boldFormatLoader,
+  italicFormatLoader,
+  colorFormatLoader,
+  fontFamilyFormatLoader,
+  fontSizeFormatLoader,
+  letterSpacingFormatLoader,
+  lineHeightFormatLoader,
+  strikeThroughFormatLoader,
+  subscriptFormatLoader,
+  superscriptFormatLoader,
+  underlineFormatLoader,
+  codeFormatLoader,
+  linkFormatLoader,
+  textBackgroundColorFormatLoader,
+  verticalAlignFormatLoader,
+]
+
+export const defaultAttributeLoaders: AttributeLoader<any>[] = [
+  blockBackgroundColorFormatLoader,
+  textAlignFormatLoader,
+  textIndentFormatLoader,
+  dirFormatLoader
+]
+
+export const defaultComponents: Component[] = [
+  audioComponent,
+  blockComponent,
+  blockquoteComponent,
+  headingComponent,
+  imageComponent,
+  listComponent,
+  paragraphComponent,
+  preComponent,
+  tableComponent,
+  videoComponent,
+  imageCardComponent,
+  todolistComponent,
+  katexComponent,
+  wordExplainComponent,
+  timelineComponent,
+  stepComponent,
+  alertComponent,
+  jumbotronComponent
+]
+export const defaultFormatters: Formatter<any>[] = [
+  boldFormatter,
+  italicFormatter,
+  colorFormatter,
+  fontFamilyFormatter,
+  fontSizeFormatter,
+  letterSpacingFormatter,
+  lineHeightFormatter,
+  strikeThroughFormatter,
+  subscriptFormatter,
+  superscriptFormatter,
+  underlineFormatter,
+  codeFormatter,
+  linkFormatter,
+  textBackgroundColorFormatter,
+  verticalAlignFormatter,
+]
+
+export const defaultAttributes: Attribute<any>[] = [
+  blockBackgroundColorFormatter,
+  textAlignFormatter,
+  textIndentFormatter,
+  dirFormatter,
+]
+
+import '@textbus/editor/bundles/textbus.min.css'
+
+export const defaultOptions: EditorOptions = {
   editingStyleSheets: [
-    `[textbus-document=true]{overflow: visible!important}`
+    `[textbus-document=true] [style*=color]:not([style*=background-color])
+     [textbus-document=true] a {color: inherit;}
+     [textbus-document=true] a {text-decoration: underline; color: #449fdb; cursor: text;}
+     [textbus-document=true] {line-height: 1.5}`
   ],
-  componentLoaders: [
-    todolistComponentLoader,
-    atComponentLoader,
-    testComponentLoader,
-    gridComponentLoader,
-    alertComponentLoader,
-
-    audioComponentLoader,
-    blockComponentLoader,
-    blockquoteComponentLoader,
-    headingComponentLoader,
-    imageComponentLoader,
-    listComponentLoader,
-    paragraphComponentLoader,
-    preComponentLoader,
-    tableComponentLoader,
-    videoComponentLoader,
-  ],
-  formatLoaders: [
-    boldFormatLoader,
-    italicFormatLoader,
-    colorFormatLoader,
-    fontFamilyFormatLoader,
-    fontSizeFormatLoader,
-    letterSpacingFormatLoader,
-    lineHeightFormatLoader,
-    strikeThroughFormatLoader,
-    subscriptFormatLoader,
-    superscriptFormatLoader,
-    underlineFormatLoader,
-    codeFormatLoader,
-    blockBackgroundColorFormatLoader,
-    linkFormatLoader,
-    textBackgroundColorFormatLoader,
-    textAlignFormatLoader,
-    textIndentFormatLoader,
-    verticalAlignFormatLoader,
-    dirFormatLoader
-  ],
-  plugins: [
-    new Toolbar([
-      [historyBackTool, historyForwardTool],
-      [defaultGroupTool],
-      [headingTool],
-      [boldTool, italicTool, strikeThroughTool, underlineTool],
-      [olTool, ulTool],
-      [fontSizeTool, textIndentTool],
-      [colorTool, textBackgroundTool],
-      [insertParagraphBeforeTool, insertParagraphAfterTool],
-      [fontFamilyTool],
-      [linkTool, unlinkTool],
-      [imageTool],
-      [textAlignTool],
-      [tableAddTool, tableRemoveTool],
-      [cleanTool],
-
-      [alertTool, gridTool, todolistTool]
-    ]),
-    new LinkJumpTipPlugin(),
-    new AtPlugin()
-  ],
-  // content: document.getElementById('template')?.innerHTML
+  components: defaultComponents,
+  formatters: defaultFormatters,
+  componentLoaders: defaultComponentLoaders,
+  formatLoaders: defaultFormatLoaders,
+  attributes: defaultAttributes,
+  attributeLoaders: defaultAttributeLoaders
 }
 
-const editor = createEditor(document.getElementById('editor')!, options)
+export const defaultTools: ToolFactory[][] = [
+  [historyBackTool, historyForwardTool],
+  [defaultGroupTool],
+  [componentsTool],
+  [headingTool],
+  [boldTool, italicTool, strikeThroughTool, underlineTool],
+  [olTool, ulTool],
+  [fontSizeTool, textIndentTool],
+  [colorTool, textBackgroundTool],
+  [insertParagraphBeforeTool, insertParagraphAfterTool],
+  [fontFamilyTool],
+  [linkTool, unlinkTool],
+  [imageTool],
+  [textAlignTool],
+  [tableAddTool, tableRemoveTool],
+  [formatPainterTool],
+  [cleanTool]
+]
+
+export function createEditor(options: EditorOptions = {}) {
+  return new Editor({
+    plugins: [
+      () => new Toolbar(defaultTools),
+      () => new LinkJumpTipPlugin()
+    ],
+    ...defaultOptions,
+    ...options
+  })
+}
+
+
+const editor = createEditor()
+editor.mount(document.getElementById('editor')!)
 
 const btn = document.getElementById('insertTextComponent')!
 
 btn.addEventListener('click', () => {
-  const injector = editor.injector!
-  const commander = injector.get(Commander)
+  const commander = editor.get(Commander)
 
-  commander.insert(testComponent.createInstance(injector, {
+  commander.insert(testComponent.createInstance(editor, {
     state: {
       borderColor: '#f00'
     }
@@ -141,3 +242,4 @@ btn.addEventListener('click', () => {
 // editor.onChange.subscribe(() => {
 //   console.log(editor.getContents())
 // })
+

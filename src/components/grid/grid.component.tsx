@@ -1,7 +1,7 @@
 import {
-  ComponentData,
+  ComponentInitData,
   ComponentInstance,
-  ComponentMethods,
+  ComponentExtends,
   ContentType,
   defineComponent,
   onContextMenu,
@@ -11,17 +11,17 @@ import {
   useSlots, useState,
   VElement
 } from '@textbus/core'
-import { ComponentLoader, SlotParser } from '@textbus/browser'
+import { ComponentLoader, SlotParser } from '@textbus/platform-browser'
 import { Injector } from '@tanbo/di'
 
 export interface GridState {
   cols: number
 }
 
-export const gridComponent = defineComponent<ComponentMethods, GridState>({
+export const gridComponent = defineComponent<ComponentExtends, GridState>({
   name: 'GridComponent',
   type: ContentType.BlockComponent,
-  setup(data: ComponentData<GridState>): ComponentMethods {
+  setup(data: ComponentInitData<GridState>): ComponentExtends {
     let state = data.state!
     const stateController = useState(state)
     const subscription = stateController.onChange.subscribe(newState => {
@@ -81,8 +81,8 @@ export const gridComponent = defineComponent<ComponentMethods, GridState>({
                     <div class="grid-group">
                       {
                         row.map(slot => {
-                          return slotRender(slot, () => {
-                            return <div class="grid-cell"/>
+                          return slotRender(slot, children => {
+                            return <div class="grid-cell">{children}</div>
                           })
                         })
                       }
@@ -140,7 +140,6 @@ export const gridComponentLoader: ComponentLoader = {
     }`
     ]
   },
-  component: gridComponent,
   match(element: HTMLElement): boolean {
     return element.tagName.toLowerCase() === 'div' && element.className === 'grid'
   },

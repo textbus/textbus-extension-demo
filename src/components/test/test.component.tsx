@@ -1,5 +1,5 @@
 import {
-  ComponentData,
+  ComponentInitData,
   ComponentInstance,
   ContentType,
   defineComponent,
@@ -7,7 +7,7 @@ import {
   useState,
   VElement
 } from '@textbus/core';
-import { ComponentLoader } from '@textbus/browser';
+import { ComponentLoader } from '@textbus/platform-browser';
 import { Injector } from '@tanbo/di'
 
 export interface TestComponentState {
@@ -17,7 +17,7 @@ export interface TestComponentState {
 export const testComponent = defineComponent({
   type: ContentType.BlockComponent,
   name: 'TestComponent',
-  setup(initData: ComponentData<TestComponentState>) {
+  setup(initData: ComponentInitData<TestComponentState>) {
 
     let state = {
       borderColor: initData.state!.borderColor
@@ -69,7 +69,6 @@ export const testComponent = defineComponent({
 })
 
 export const testComponentLoader: ComponentLoader = {
-  component: testComponent,
   match(element: HTMLElement): boolean {
     return element.tagName === 'DIV' && element.getAttribute('component-name') === 'TestComponent'
   },

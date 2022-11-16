@@ -14,8 +14,8 @@
     "esModuleInterop": true,
     "noImplicitOverride": true,
     "baseUrl": "./",
-    "jsx": "react",
-    "jsxFactory": "VElement.createElement"
+    "jsx": "react-jsx",
+    "jsxImportSource": "@textbus/core"
   },
   "exclude": ["packages"]
 }

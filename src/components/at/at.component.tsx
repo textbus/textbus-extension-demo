@@ -1,14 +1,13 @@
 import {
-  ComponentData,
+  ComponentInitData,
   ComponentInstance,
   ContentType,
   defineComponent,
   onContentInsert, Selection,
   Slot, useContext, useSelf,
   useSlots,
-  VElement
 } from '@textbus/core';
-import { ComponentLoader, SlotParser } from '@textbus/browser';
+import { ComponentLoader, SlotParser } from '@textbus/platform-browser';
 import { Injector } from '@tanbo/di';
 
 export interface AtComponentOption {
@@ -19,7 +18,7 @@ export interface AtComponentOption {
 export const atComponent = defineComponent({
   type: ContentType.InlineComponent,
   name: 'AtComponent',
-  setup(initData?: ComponentData<void>) {
+  setup(initData?: ComponentInitData<void>) {
     const slots = useSlots(initData?.slots || [new Slot([
       ContentType.Text
     ])])
@@ -52,8 +51,8 @@ export const atComponent = defineComponent({
         return (
           <span component-name="AtComponent">@
             {
-              slotRender(slots.get(0)!, () => {
-                return <span/>
+              slotRender(slots.get(0)!, children => {
+                return <span>{children}</span>
               })
             }
             <span style="position: relative">
@@ -87,7 +86,6 @@ export const atComponent = defineComponent({
 })
 
 export const atComponentLoader: ComponentLoader = {
-  component: atComponent,
   match(element: HTMLElement): boolean {
     return element.tagName === 'SPAN' && element.getAttribute('component-name') === 'AtComponent'
   },

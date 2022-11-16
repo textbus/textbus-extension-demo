@@ -1,7 +1,7 @@
 import {
-  ComponentData,
+  ComponentInitData,
   ComponentInstance,
-  ComponentMethods,
+  ComponentExtends,
   ContentType,
   defineComponent,
   Slot,
@@ -9,13 +9,13 @@ import {
   useSlots,
   VElement
 } from '@textbus/core'
-import { ComponentLoader, SlotParser } from '@textbus/browser'
+import { ComponentLoader, SlotParser } from '@textbus/platform-browser'
 import { Injector } from '@tanbo/di'
 
-export const alertComponent = defineComponent<ComponentMethods>({
+export const alertComponent = defineComponent<ComponentExtends>({
   type: ContentType.BlockComponent,
   name: 'AlertComponent',
-  setup(data?: ComponentData): ComponentMethods {
+  setup(data?: ComponentInitData): ComponentExtends {
     const slots = useSlots(data?.slots || [new Slot([
         ContentType.Text
       ])
@@ -39,7 +39,6 @@ export const alertComponent = defineComponent<ComponentMethods>({
 })
 
 export const alertComponentLoader: ComponentLoader = {
-  component: alertComponent,
   resources: {
     styles: [
       `.alert { border-radius: 3px; border: 1px solid #ccc; background: #eee; padding: 5px 15px}`
