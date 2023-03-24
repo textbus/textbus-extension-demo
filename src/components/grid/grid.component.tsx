@@ -1,14 +1,16 @@
 import {
+  ComponentExtends,
   ComponentInitData,
   ComponentInstance,
-  ComponentExtends,
   ContentType,
   defineComponent,
   onContextMenu,
   onDestroy,
+  RenderMode,
   Slot,
   SlotRender,
-  useSlots, useState,
+  useSlots,
+  useState,
   VElement
 } from '@textbus/core'
 import { ComponentLoader, SlotParser } from '@textbus/platform-browser'
@@ -70,9 +72,9 @@ export const gridComponent = defineComponent<ComponentExtends, GridState>({
     }
 
     return {
-      render(isOutputMode: boolean, slotRender: SlotRender): VElement {
+      render(slotRender: SlotRender, renderMode): VElement {
         const grid = toGrid()
-        if (isOutputMode) {
+        if (renderMode === RenderMode.Output) {
           return (
             <div class="grid" data-cols={state.cols}>
               {

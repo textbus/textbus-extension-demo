@@ -47,7 +47,7 @@ export const atComponent = defineComponent({
     })
 
     return {
-      render(isOutputMode: boolean, slotRender) {
+      render(slotRender) {
         return (
           <span component-name="AtComponent">@
             {

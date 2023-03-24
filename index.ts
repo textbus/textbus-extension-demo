@@ -223,20 +223,15 @@ export function createEditor(options: EditorOptions = {}) {
   })
 }
 
+import { todolist2Component } from './src/components/todolist2/todolist2.component'
 
 const editor = createEditor()
 editor.mount(document.getElementById('editor')!)
-
 const btn = document.getElementById('insertTextComponent')!
 
 btn.addEventListener('click', () => {
   const commander = editor.get(Commander)
-
-  commander.insert(testComponent.createInstance(editor, {
-    state: {
-      borderColor: '#f00'
-    }
-  }))
+  commander.insert(todolist2Component.createInstance(editor))
 })
 
 // editor.onChange.subscribe(() => {

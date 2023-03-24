@@ -56,7 +56,7 @@ export const todolistComponent = defineComponent({
     })
 
     return {
-      render(isOutputMode: boolean, slotRender: SlotRender) {
+      render(slotRender: SlotRender) {
         return (
           <div class="todolist" componnet-name="TodolistComponent">
             {

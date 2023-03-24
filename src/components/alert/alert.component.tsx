@@ -22,7 +22,7 @@ export const alertComponent = defineComponent<ComponentExtends>({
     ])
 
     return {
-      render(isOutputMode: boolean, slotRender: SlotRender): VElement {
+      render(slotRender: SlotRender): VElement {
         return (
           <div class="alert">
             <div>这是 Alert 组件，这里的内容是不可以编辑的</div>
